@@ -2,36 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ticketing98 - Tickets</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <script defer src="js/index.js"></script>
+    <title>Ticketing98 - Project Info</title>
+    <?php include "components/head.php" ?>
     <script src="js/ticketListFilter.js"></script>
 </head>
 <body class="common-body">
-<div class="window" id="sidenav">
-    <div class="title-bar">
-        <div class="title-bar-text">Ticketing98</div>
-    </div>
-    <div class="window-body sidenav-body">
-        <button onclick="location.href = 'dashboard.html'">Dashboard</button>
-        <button onclick="location.href = 'projects.html'">Projects</button>
-        <button onclick="location.href = 'tickets.html'" disabled>Tickets</button>
-        <button onclick="location.href = 'profile.html'">Profile</button>
-        <button onclick="location.href = 'settings.html'">Settings</button>
-    </div>
-</div>
+<?php require_once ("components/sidenav.php"); ?>
 <div class="window" id="main">
     <div class="title-bar">
-        <div class="title-bar-text">Tickets List</div>
+        <div class="title-bar-text">Project Info</div>
     </div>
     <div class="window-body">
-        <h4>Tickets</h4>
+        <div class="title-container">
+            <img class="icon" src="icons/computer-2.png" alt="Ticket Icon"/>
+            <div class="field-border" style="padding: 8px; width: 30%; min-width: 200px">
+                Skyblocker
+            </div>
+        </div>
+        <b>Collaborators:</b>
+        <br/>
+        <div class="sunken-panel small-sunken-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Jason John</td>
+                    <td>Developer</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <b>Contract:</b>
+        <div class="contract-container">
+            <button>View contract</button>
+            <button>Update contract</button>
+            <span>Last Updated: 05/02/2026 at 12:45</span>
+        </div>
+        <b>Tickets:</b>
         <div class="filter-row">
             <div class="field-stacked">
                 <label for="ticket-type-filter">Ticket Type</label>
-                <select id="ticket-type-filter" onchange="updateFilter()">
+                <select id="ticket-type-filter" onchange="updateFilters()">
                     <option value="all">All</option>
                     <option value="included">Included</option>
                     <option value="billed">Billed</option>
@@ -39,7 +55,7 @@
             </div>
             <div class="field-stacked">
                 <label for="ticket-status-filter">Ticket Status</label>
-                <select id="ticket-status-filter" onchange="updateFilter()">
+                <select id="ticket-status-filter" onchange="updateFilters()">
                     <option value="all">All</option>
                     <option value="new">New</option>
                     <option value="in progress">In progress</option>
@@ -64,26 +80,21 @@
                     <td>Included</td>
                     <td>In progress</td>
                     <td>Ticket Name Go Here :)</td>
-                    <td><a href="ticket.html">[View]</a></td>
+                    <td><a href="ticket.php">[View]</a></td>
                 </tr>
                 <tr>
                     <td><a href="project.html" title="View Project">SKB-2</a></td>
                     <td>Billed</td>
                     <td>Finished</td>
                     <td>Add cool particle effects!!!</td>
-                    <td><a href="ticket.html">[View]</a></td>
+                    <td><a href="ticket.php">[View]</a></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <a href="create_ticket.html"><button>Create new ticket</button></a>
+        <a href="create_ticket.php"><button>Create new ticket</button></a>
     </div>
 </div>
-<div class="window bottom-nav-bar">
-    <button class="start-menu-button" onclick="startMenuClick()">
-        <img alt="Start Icon" src="icons/windows-0.png">
-        <span><b>Start Menu</b></span>
-    </button>
-</div>
+<?php include "components/bottomnav.php" ?>
 </body>
 </html>

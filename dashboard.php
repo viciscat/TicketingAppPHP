@@ -3,24 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticketing98 - Dashboard</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <script defer src="js/index.js"></script>
+    <?php include "components/head.php" ?>
 </head>
 <body class="common-body">
-<div class="window" id="sidenav">
-    <div class="title-bar">
-        <div class="title-bar-text">Ticketing98</div>
-    </div>
-    <div class="window-body sidenav-body">
-        <button onclick="location.href = 'dashboard.html'" disabled>Dashboard</button>
-        <button onclick="location.href = 'projects.html'">Projects</button>
-        <button onclick="location.href = 'tickets.html'">Tickets</button>
-        <button onclick="location.href = 'profile.html'">Profile</button>
-        <button onclick="location.href = 'settings.html'">Settings</button>
-    </div>
-</div>
+<?php require_once ("components/sidenav.php"); ?>
 <div class="window" id="main">
     <div class="title-bar">
         <div class="title-bar-text">Dashboard</div>
@@ -60,7 +46,7 @@
                     <td><a href="#">SKB-1</a></td>
                     <td>In progress</td>
                     <td>Ticket Name Go Here :)</td>
-                    <td><a href="ticket.html">[View]</a></td>
+                    <td><a href="ticket.php">[View]</a></td>
                 </tr>
                 </tbody>
             </table>

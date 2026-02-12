@@ -3,24 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticketing98 - Ticket Info</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <script defer src="js/index.js"></script>
+    <?php include "components/head.php" ?>
 </head>
 <body class="common-body">
-<div class="window" id="sidenav">
-    <div class="title-bar">
-        <div class="title-bar-text">Ticketing98</div>
-    </div>
-    <div class="window-body sidenav-body">
-        <button onclick="location.href = 'dashboard.html'">Dashboard</button>
-        <button onclick="location.href = 'projects.html'">Projects</button>
-        <button onclick="location.href = 'tickets.html'">Tickets</button>
-        <button onclick="location.href = 'profile.html'">Profile</button>
-        <button onclick="location.href = 'settings.html'">Settings</button>
-    </div>
-</div>
+<?php require_once ("components/sidenav.php"); ?>
 <div class="window" id="main">
     <div class="title-bar">
         <div class="title-bar-text">Ticket Information</div>
@@ -99,11 +85,6 @@
 
     </div>
 </div>
-<div class="window bottom-nav-bar">
-    <button class="start-menu-button" onclick="startMenuClick()">
-        <img alt="Start Icon" src="icons/windows-0.png">
-        <span><b>Start Menu</b></span>
-    </button>
-</div>
+<?php include "components/bottomnav.php" ?>
 </body>
 </html>

@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticketing98 - Forgot Password</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
+    <?php include "components/head.php" ?>
     <script src="js/formHelper.js"></script>
 </head>
 <body>

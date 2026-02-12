@@ -1,27 +1,29 @@
+<?php
+require 'util/util.php';
+require 'util/FormHelper.php';
+require 'components/popup.php';
+
+$form = new FormHelper();
+$form->testParam("name");
+$form->testParam("kind");
+$form->testParam("priority");
+$form->testParam("issue-prefix");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Ticketing98 - New Ticket</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <script defer src="js/index.js"></script>
+    <?php include "components/head.php" ?>
+    <!-- redirect if valid -->
+    <?php if ($form->is_request && $form->valid) : ?>
+        <meta http-equiv="refresh" content="0; url=ticket.php" />
+    <?php endif; ?>
     <script src="js/formHelper.js"></script>
 </head>
 <body class="common-body">
-<div class="window" id="sidenav">
-    <div class="title-bar">
-        <div class="title-bar-text">Ticketing98</div>
-    </div>
-    <div class="window-body sidenav-body">
-        <button onclick="location.href = 'dashboard.html'">Dashboard</button>
-        <button onclick="location.href = 'projects.html'">Projects</button>
-        <button onclick="location.href = 'tickets.html'">Tickets</button>
-        <button onclick="location.href = 'profile.html'">Profile</button>
-        <button onclick="location.href = 'settings.html'">Settings</button>
-    </div>
-</div>
+<?php require_once ("components/sidenav.php"); ?>
 <div class="window" id="main">
     <div class="title-bar">
         <div class="title-bar-text">Ticket Wizard</div>
@@ -32,7 +34,7 @@
             <form id="create-ticket-form" class="basic-form">
                 <div class="field-row-stacked">
                     <label for="project">Target Project</label>
-                    <select id="project">
+                    <select id="project" name="project">
                         <option hidden value="">Select Project</option>
                         <option>Skyblocker</option>
                         <option>Other</option>
@@ -45,7 +47,7 @@
 
                 <div class="field-row-stacked">
                     <label for="name">Ticket Name</label>
-                    <input id="name" type="text"/>
+                    <input id="name" type="text" name="name" value="<?= $form->get("name") ?>"/>
                     <div id="name-error" class="hidden font-13px error-message">
                         <img src="icons/msg_error-2.png" alt="Error Name" width="16" height="16">
                         <span>A ticket must have a name!</span>
@@ -54,20 +56,20 @@
 
                 <!-- Dropdowns -->
                 <div class="field-row-stacked">
-                    <label for="ticket-type">Ticket Type</label>
-                    <select id="ticket-type">
-                        <option hidden value="">Select Type</option>
+                    <label for="ticket-kind">Ticket Type</label>
+                    <select id="ticket-kind" name="kind">
+                        <option hidden value="">Select Kind</option>
                         <option>Task</option>
                         <option>Issue</option>
                     </select>
-                    <div id="ticket-type-error" class="hidden font-13px error-message">
-                        <img src="icons/msg_error-2.png" alt="Error Ticket Type" width="16" height="16">
-                        <span>A ticket must have a type!</span>
+                    <div id="ticket-kind-error" class="hidden font-13px error-message">
+                        <img src="icons/msg_error-2.png" alt="Error Ticket Kind" width="16" height="16">
+                        <span>A ticket must have a kind!</span>
                     </div>
                 </div>
                 <div class="field-row-stacked">
                     <label for="priority">Priority</label>
-                    <select id="priority">
+                    <select id="priority" name="priority">
                         <option hidden value="">Select Priority</option>
                         <option>3 - Must</option>
                         <option>2 - Should</option>
@@ -80,30 +82,37 @@
                 </div>
                 <div class="field-row-stacked" style="width: 300px">
                     <label for="description">Description</label>
-                    <textarea id="description" rows="8"></textarea>
+                    <textarea id="description" rows="8" name="description"></textarea>
                 </div>
             </form>
-            <script>
-                document.getElementById('create-ticket-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    let valid = true;
-                    valid &= checkInput('project', 'project-error', [emptyCondition("A ticket must be linked to a project!")]);
-                    valid &= checkInput('name', 'name-error', [emptyCondition("A ticket must have a name!")]);
-                    valid &= checkInput('ticket-type', 'ticket-type-error', [emptyCondition("A ticket must have a type!")]);
-                    valid &= checkInput('priority', 'priority-error', [emptyCondition("A ticket must have to a priority!")]);
-                    if (valid) location.href = 'ticket.html'
-                })
-            </script>
+
         </div>
         <p>This will create a ticket for the 'Skyblocker' project.</p>
         <input form="create-ticket-form" type="submit" value="Create Ticket"/>
     </div>
 </div>
-<div class="window bottom-nav-bar">
-    <button class="start-menu-button" onclick="startMenuClick()">
-        <img alt="Start Icon" src="icons/windows-0.png">
-        <span><b>Start Menu</b></span>
-    </button>
-</div>
+<?php include "components/bottomnav.php" ?>
+<?php if ($form->is_request && !$form->valid) {
+    ob_start();
+    ?>
+    Wuh Oh! It seems the server didn't accept this form for some reason! <br>
+    These inputs seemed to contain to invalid data: <br>
+    <?php foreach ($form->invalid_values as $invalid_value) : ?>
+        <span><?= $invalid_value ?></span>
+    <?php endforeach; ?>
+    <?php
+    $message = ob_get_clean();
+    echo createPopup("Form error!", $message, true);
+} ?>
 </body>
+<script>
+    document.getElementById('create-ticket-form').addEventListener('submit', (e) => {
+        let valid = true;
+        valid &= checkInput('project', 'project-error', [emptyCondition("A ticket must be linked to a project!")]);
+        valid &= checkInput('name', 'name-error', [emptyCondition("A ticket must have a name!")]);
+        valid &= checkInput('ticket-kind', 'ticket-kind-error', [emptyCondition("A ticket must have a kind!")]);
+        valid &= checkInput('priority', 'priority-error', [emptyCondition("A ticket must have to a priority!")]);
+        if (!valid) e.preventDefault();
+    })
+</script>
 </html>

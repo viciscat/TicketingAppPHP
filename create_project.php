@@ -1,27 +1,39 @@
+<?php
+require 'util/util.php';
+require 'util/FormHelper.php';
+require 'components/popup.php';
+
+$form = new FormHelper();
+$form->testParam("name");
+$form->testParam("issue-prefix");
+$form->testParam("collaborators", function ($collaborators) {
+    if ($collaborators) {
+        foreach (explode(";", $collaborators) as $collaborator) {
+            $temp = explode(":", $collaborator);
+            $email = $temp[0];
+            if (!isEmailValid($email)) {
+                return false;
+            }
+        }
+    }
+    return true;
+});
+$form->testFile("contract");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Ticketing98 - Create Project</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <script defer src="js/index.js"></script>
+    <?php include "components/head.php" ?>
     <script src="js/formHelper.js"></script>
+    <!-- redirect if valid -->
+    <?php if ($form->is_request && $form->valid) : ?>
+        <meta http-equiv="refresh" content="0; url=project.php" />
+    <?php endif; ?>
 </head>
 <body class="common-body">
-<div class="window" id="sidenav">
-    <div class="title-bar">
-        <div class="title-bar-text">Ticketing98</div>
-    </div>
-    <div class="window-body sidenav-body">
-        <button onclick="location.href = 'dashboard.html'">Dashboard</button>
-        <button onclick="location.href = 'projects.html'">Projects</button>
-        <button onclick="location.href = 'tickets.html'">Tickets</button>
-        <button onclick="location.href = 'profile.html'">Profile</button>
-        <button onclick="location.href = 'settings.html'">Settings</button>
-    </div>
-</div>
+<?php require_once ("components/sidenav.php"); ?>
 <div class="window" id="main">
     <div class="title-bar">
         <div class="title-bar-text">Project Wizard</div>
@@ -29,10 +41,10 @@
     <div class="window-body" style="display: flex; flex-direction: column; align-items: flex-start">
         <h4 style="flex-shrink: 0">Project Wizard</h4>
         <div class="window-content">
-            <form class="basic-form" id="create-project-form">
+            <form class="basic-form" id="create-project-form" method="post" enctype="multipart/form-data">
                 <div class="field-row-stacked">
                     <label for="name">Project Name</label>
-                    <input id="name" required type="text"/>
+                    <input id="name" type="text" name="name" value="<?= $form->get("name") ?>"/>
                     <div class="hidden font-13px error-message" id="name-error">
                         <img alt="Error Name" height="16" src="icons/msg_error-2.png" width="16">
                         <span>A project must have a name!</span>
@@ -40,7 +52,7 @@
                 </div>
                 <div class="field-row-stacked">
                     <label for="issue-prefix">Issue Prefix</label>
-                    <input id="issue-prefix" maxlength="4" required style="max-width: 10ch" type="text"/>
+                    <input id="issue-prefix" maxlength="4" required style="max-width: 10ch" type="text" name="issue-prefix" value="<?= $form->get("issue-prefix") ?>"/>
                     <div class="hidden font-13px error-message" id="prefix-error">
                         <img alt="Error Prefix" height="16" src="icons/msg_error-2.png" width="16">
                         <span>A project must have a prefix!</span>
@@ -50,9 +62,14 @@
 
                 <div class="field-row-stacked">
                     <label for="contract">Contract</label>
-                    <input accept="application/pdf" id="contract" required type="file" value="Contract"/>
+                    <input accept="application/pdf" id="contract" required type="file" value="Contract" name="contract"/>
+                    <div class="hidden font-13px error-message" id="contract-error">
+                        <img alt="Error Contract" height="16" src="icons/msg_error-2.png" width="16">
+                        <span>A project must have a prefix!</span>
+                    </div>
                 </div>
                 <div class="field-row-stacked">
+                    <input type="hidden" id="collaborators" name="collaborators" />
                     <span>Collaborators</span>
                     <div class="collaborators-input-container">
                         <div class="sunken-panel" style="min-height: 8rem; min-width: 150px">
@@ -96,58 +113,67 @@
                     </div>
                 </div>
             </form>
-            <script>
-                let collaborators = {}
-
-                function addCollaborator() {
-                    let collaborator = document.getElementById('collaborator-email');
-                    let role = document.getElementById('collaborator-role');
-                    let valid = true;
-
-                    valid &= checkInput(collaborator, 'collaborator-email-error', [
-                        emptyCondition("Collaborator must not be empty!"),
-                        emailCondition("Email is invalid!"),
-                        {
-                            errorPredicate: input => input.value in collaborators,
-                            message: "Collaborator already exists!"
-                        }
-                    ]);
-                    valid &= checkInput(role, 'collaborator-role-error', [emptyCondition("A role is required!")]);
-
-                    if (valid) {
-                        let collaboratorTable = document.querySelector("#collaborators-table tbody");
-                        const row = `
-                        <tr>
-                            <td>${collaborator.value}</td>
-                            <td>${role.value}</td>
-                        </tr>
-                        `
-                        collaboratorTable.insertAdjacentHTML('beforeend', row);
-                        collaborators[collaborator.value] = role.value;
-                        collaborator.value = ""
-                        role.value = ""
-                    }
-                }
-
-                document.getElementById('create-project-form').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    let valid = true;
-                    valid &= checkInput('name', 'name-error', [emptyCondition("Name is required!")]);
-                    valid &= checkInput('contract', 'contract-error', [emptyCondition("A contract is required!")]);
-                    valid &= checkInput('issue-prefix', 'issue-prefix-error', [emptyCondition("Issue prefix is required!"), lengthCondition(4, "Prefix must be at most 4 characters long!")]);
-                    if (valid) location.href = 'project.html'
-                })
-            </script>
         </div>
         <p>These options can be modified later on.</p>
         <input form="create-project-form" type="submit" value="Create Project"/>
     </div>
 </div>
-<div class="window bottom-nav-bar">
-    <button class="start-menu-button" onclick="startMenuClick()">
-        <img alt="Start Icon" src="icons/windows-0.png">
-        <span><b>Start Menu</b></span>
-    </button>
-</div>
+<?php include "components/bottomnav.php" ?>
+<?php if ($form->is_request && !$form->valid) {
+    ob_start();
+    ?>
+Wuh Oh! It seems the server didn't accept this form for some reason! <br>
+These inputs seemed to contain to invalid data: <br>
+<?php foreach ($form->invalid_values as $invalid_value) : ?>
+    <span><?= $invalid_value ?></span>
+<?php endforeach; ?>
+<?php
+    $message = ob_get_clean();
+    echo createPopup("Form error!", $message, true);
+} ?>
 </body>
+<script>
+    let collaborators = {}
+
+    function addCollaborator() {
+        let collaborator = document.getElementById('collaborator-email');
+        let role = document.getElementById('collaborator-role');
+        let valid = true;
+
+        valid &= checkInput(collaborator, 'collaborator-email-error', [
+            emptyCondition("Collaborator must not be empty!"),
+            emailCondition("Email is invalid!"),
+            {
+                errorPredicate: input => input.value in collaborators,
+                message: "Collaborator already exists!"
+            }
+        ]);
+        valid &= checkInput(role, 'collaborator-role-error', [emptyCondition("A role is required!")]);
+
+        if (valid) {
+            let collaboratorTable = document.querySelector("#collaborators-table tbody");
+            const row = `
+                        <tr>
+                            <td>${collaborator.value}</td>
+                            <td>${role.value}</td>
+                        </tr>
+                        `
+            collaboratorTable.insertAdjacentHTML('beforeend', row);
+            collaborators[collaborator.value] = role.value;
+            collaborator.value = ""
+            role.value = ""
+        }
+    }
+
+    document.getElementById('create-project-form').addEventListener('submit', (e) => {
+        let valid = true;
+        //valid &= checkInput('name', 'name-error', [emptyCondition("Name is required!")]);
+        valid &= checkInput('contract', 'contract-error', [emptyCondition("A contract is required!")]);
+
+        valid &= checkInput('issue-prefix', 'prefix-error', [emptyCondition("Issue prefix is required!"), lengthCondition(4, "Prefix must be at most 4 characters long!")]);
+        document.getElementById("collaborators").value = Object.entries(collaborators).map(entry => `${entry[0]}:${entry[1]}`).join(";");
+        if (!valid) e.preventDefault();
+        return valid;
+    })
+</script>
 </html>

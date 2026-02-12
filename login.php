@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticketing98 - Login</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://unpkg.com/98.css@0.1.21/dist/98.css" rel="stylesheet"/>
-    <link href="css/styles.css" rel="stylesheet"/>
+    <?php include "components/head.php" ?>
     <script src="js/formHelper.js"></script>
 </head>
 <body>
@@ -31,7 +29,7 @@
                 <img src="icons/msg_error-2.png" alt="Error Password" width="16" height="16">
                 <span>Password must not be empty!</span>
             </div>
-            <a href="forgot_password.html">Forgot Password?</a>
+            <a href="forgot_password.php">Forgot Password?</a>
             <div style="text-align: right"><input type="submit" value="Login"></div>
         </form>
         <script>
