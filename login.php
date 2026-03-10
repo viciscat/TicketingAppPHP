@@ -1,3 +1,9 @@
+<?php
+
+use Util\SessionHelper;
+
+require "vendor/autoload.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +24,7 @@
                 <input id="username" name="username" placeholder="Username" type="email" required>
             </div>
             <div id="username-error" class="hidden font-13px error-message">
-                <img src="icons/msg_error-2.png" alt="Error Username" width="16" height="16">
+                <img src="assets/icons/msg_error-2.png" alt="Error Username" width="16" height="16">
                 <span>Username must not be empty!</span>
             </div>
             <div class="login-form-input">
@@ -26,7 +32,7 @@
                 <input id="password" name="password" placeholder="Password" type="password">
             </div>
             <div id="password-error" class="hidden font-13px error-message">
-                <img src="icons/msg_error-2.png" alt="Error Password" width="16" height="16">
+                <img src="assets/icons/msg_error-2.png" alt="Error Password" width="16" height="16">
                 <span>Password must not be empty!</span>
             </div>
             <a href="forgot_password.php">Forgot Password?</a>
@@ -47,5 +53,7 @@
         </script>
     </section>
 </div>
+<?= SessionHelper::get()->getPopup();
+?>
 </body>
 </html>

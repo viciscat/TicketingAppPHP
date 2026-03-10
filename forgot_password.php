@@ -17,7 +17,7 @@
             <label for="email">Email</label>
             <input id="email" name="email" placeholder="Email" type="email" required>
             <div id="email-error" class="hidden font-13px error-message">
-                <img src="icons/msg_error-2.png" alt="Error Username" width="16" height="16">
+                <img src="assets/icons/msg_error-2.png" alt="Error Username" width="16" height="16">
                 <span>Username must not be empty!</span>
             </div>
             <div id="success-message" class="hidden">

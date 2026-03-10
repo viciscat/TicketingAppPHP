@@ -14,7 +14,7 @@
     <div class="window-body">
         <div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; margin: 16px">
             <div class="dashboard-statistic window">
-                <img alt="Icon" class="statistic-icon" src="icons/ticket.png"/>
+                <img alt="Icon" class="statistic-icon" src="assets/icons/ticket.png"/>
 
                 <div class="statistic-text">
                     <div class="statistic-title">New Tickets</div>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="dashboard-statistic window">
-                <img alt="Icon" class="statistic-icon" src="icons/ticket_due.png"/>
+                <img alt="Icon" class="statistic-icon" src="assets/icons/ticket_due.png"/>
 
                 <div class="statistic-text">
                     <div class="statistic-title">Tickets Past Due</div>
@@ -46,7 +46,7 @@
                     <td><a href="#">SKB-1</a></td>
                     <td>In progress</td>
                     <td>Ticket Name Go Here :)</td>
-                    <td><a href="ticket.php">[View]</a></td>
+                    <td><a href="tickets/view.php">[View]</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -55,7 +55,7 @@
 </div>
 <div class="window bottom-nav-bar">
     <button class="start-menu-button" onclick="startMenuClick()"><img alt="Start Icon"
-                                                                      src="icons/windows-0.png"><span><b>Start Menu</b></span>
+                                                                      src="assets/icons/windows-0.png"><span><b>Start Menu</b></span>
     </button>
 </div>
 </body>

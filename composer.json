@@ -1,3 +1,11 @@
 {
-  "require": {}
+  "require": {
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Util\\": "util/",
+      "Component\\": "components/"
+    }
+  }
 }

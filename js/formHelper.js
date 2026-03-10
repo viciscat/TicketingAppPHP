@@ -2,21 +2,21 @@ const emailRegex = new RegExp("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
 
 function emptyCondition(errorMessage) {
     return {
-        errorPredicate: (input) => input.value === '',
+        predicate: (input) => input.value !== '',
         message: errorMessage,
     }
 }
 
 function emailCondition(errorMessage) {
     return {
-        errorPredicate: (input) => !emailRegex.test(input.value),
+        predicate: (input) => emailRegex.test(input.value),
         message: errorMessage,
     }
 }
 
 function lengthCondition(maxLength, errorMessage) {
     return {
-        errorPredicate: (input) => input.value.length > maxLength,
+        predicate: (input) => input.value.length <= maxLength,
         message: errorMessage,
     }
 }
@@ -32,7 +32,7 @@ function checkInput(input, errorMessageDiv, conditions) {
     if (typeof input === 'string') input = document.getElementById(input);
     if (typeof errorMessageDiv === 'string') errorMessageDiv = document.getElementById(errorMessageDiv);
     for (const condition of conditions) {
-        if (condition.errorPredicate(input)) {
+        if (!condition.predicate(input)) {
             errorMessageDiv.querySelector("span").innerHTML = condition.message;
             errorMessageDiv.classList.remove("hidden");
             return false;
