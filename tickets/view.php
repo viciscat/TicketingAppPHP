@@ -5,7 +5,6 @@ use Util\Database;
 $ticketInfo = null;
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     try {
-        // FIXME untested time spent
         $var = Database::get()->execute(
                 "SELECT issue_prefix, tickets.*, COALESCE(SUM(time_spent), 0) AS total_time_spent FROM tickets
                         JOIN projects on projects.id = tickets.project_id
