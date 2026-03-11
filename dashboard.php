@@ -12,6 +12,7 @@
         <div class="title-bar-text">Dashboard</div>
     </div>
     <div class="window-body">
+        UNIMPLEMENTED
         <div style="display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; margin: 16px">
             <div class="dashboard-statistic window">
                 <img alt="Icon" class="statistic-icon" src="assets/icons/ticket.png"/>

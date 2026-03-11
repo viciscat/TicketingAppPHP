@@ -66,7 +66,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             <?=$ticketInfo["description"]?>
         </div>
         <br/>
-        <b>Assigned collaborators:</b>
+        <b>Assigned collaborators: (UNIMPLEMENTED)</b>
         <br/>
         <div class="sunken-panel small-sunken-table">
             <table>
@@ -85,7 +85,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             </table>
         </div>
         <br/>
-        <b>Attachments:</b>
+        <b>Attachments: (UNIMPLEMENTED)</b>
         <br/>
         <div class="sunken-panel small-sunken-table">
             <table>
